@@ -42,3 +42,15 @@ jobs:
             fi
             git push origin main
           fi
+
+      - name: Trigger Cloudflare Pages deploy after upstream sync
+        if: success()
+        env:
+          CF_DEPLOY_HOOK_URL: ${{ secrets.CF_DEPLOY_HOOK_URL || vars.CF_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$CF_DEPLOY_HOOK_URL" ]; then
+            echo "::warning::未配置 CF_DEPLOY_HOOK_URL，已跳过 Cloudflare 部署触发。"
+            exit 0
+          fi
+          curl --fail --silent --show-error --retry 3 --retry-delay 5 -X POST "$CF_DEPLOY_HOOK_URL"
+          echo "Cloudflare 部署已触发（上游同步）"
