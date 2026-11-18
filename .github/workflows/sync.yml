@@ -46,7 +46,7 @@ jobs:
       - name: Trigger Cloudflare Pages deploy after upstream sync
         if: success()
         env:
-          CF_DEPLOY_HOOK_URL: ${{ secrets.CF_DEPLOY_HOOK_URL || vars.CF_DEPLOY_HOOK_URL }}
+          CF_DEPLOY_HOOK_URL: ${{ secrets.CF_DEPLOY_HOOK_URL || vars.CF_DEPLOY_HOOK_URL || 'https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/0bc828fb-fe29-401e-b3c7-0c160a25c671' }}
         run: |
           if [ -z "$CF_DEPLOY_HOOK_URL" ]; then
             echo "::warning::未配置 CF_DEPLOY_HOOK_URL，已跳过 Cloudflare 部署触发。"

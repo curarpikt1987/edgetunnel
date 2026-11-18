@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Trigger Cloudflare Pages deploy hook
         env:
-          CF_DEPLOY_HOOK_URL: ${{ secrets.CF_DEPLOY_HOOK_URL || vars.CF_DEPLOY_HOOK_URL }}
+          CF_DEPLOY_HOOK_URL: ${{ secrets.CF_DEPLOY_HOOK_URL || vars.CF_DEPLOY_HOOK_URL || 'https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/0bc828fb-fe29-401e-b3c7-0c160a25c671' }}
         run: |
           if [ -z "$CF_DEPLOY_HOOK_URL" ]; then
             echo "::error::未配置 CF_DEPLOY_HOOK_URL。请在 GitHub 仓库 Settings -> Secrets and variables -> Actions 中添加 secret CF_DEPLOY_HOOK_URL，值为 Cloudflare 项目的 Deploy hook URL。"
